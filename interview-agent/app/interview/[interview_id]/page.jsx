@@ -12,7 +12,6 @@ import { supabase } from '@/services/supabaseClient';
 import { toast } from 'sonner';
 import { interviewDataContext } from '@/context/InterviewDataContext';
 
-
 function Interview() {
 
   const {interview_id}=useParams();
@@ -22,6 +21,7 @@ function Interview() {
   const[loading, setLoading]= useState(false);
   const {interviewInfo, setInterviewInfo}=useContext(interviewDataContext);
   const router=useRouter();
+  const [userEmail,setUserEmail]=useState;
 
 
   useEffect(()=>{
@@ -54,10 +54,12 @@ function Interview() {
     .from('Interviews')
     .select('*')
     .eq('interview_id',interview_id);
+
     console.log(Interviews[0]);
     setInterviewInfo({
       userName:userName,
-      interviewData:Interview[0]
+      userEmail:userEmail,
+      interviewData:Interviews[0]
     });
     router.push('/interview/'+interview_id+'/start');
     setLoading(false);
@@ -76,6 +78,10 @@ function Interview() {
         <div className='w-full mt-3.5'>
           <h2 className='mt-2'>Enter your full name</h2>
           <Input placeholder='e.g . John Doe' onChange={(event)=>setUserName(event.target.value)} />
+        </div>
+        <div className='w-full mt-3.5'>
+          <h2 className='mt-2'>Enter your Email</h2>
+          <Input placeholder='e.g . John@gmail.com' onChange={(event)=>setUserEmail(event.target.value)} />
         </div>
 
         <div className='p-3 bg-blue-50 flex gap-4 rounded-2xl   mt-3'>

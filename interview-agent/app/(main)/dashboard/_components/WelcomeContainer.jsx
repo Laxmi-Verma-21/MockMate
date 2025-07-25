@@ -35,12 +35,12 @@ function WelcomeContainer() {
     return <p className="text-gray-500">Loading user info...</p>;
   }
 
-  const { user } = userContext; // ✅ define `user` properly
+  const { user } = userContext; // define `user` properly
 
   return (
     <div  className="bg-white p-5 rounded-xl flex justify-between items-center ">
       <div>
-        <h2 className="text-lg font-bold">Welcome Back, {user.name || "Guest"}</h2>
+        <h2 className="text-lg font-bold">Welcome Back, {user?.name || "Guest"}</h2>
         <h2 className="text-gray-600">AI-Driven Interviews, Hassle-Free Hiring</h2>
        </div>
         {user.picture && (

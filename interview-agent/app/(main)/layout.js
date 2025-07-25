@@ -1,5 +1,7 @@
+"use client"
 import React from 'react'
 import DashboardProvider from './provider'
+
 import { Toaster } from 'sonner'
 
 function DashboardLayout({children}) {
