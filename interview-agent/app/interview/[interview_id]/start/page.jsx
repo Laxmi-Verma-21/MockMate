@@ -7,12 +7,14 @@ import Image from 'next/image';
 import Vapi from '@vapi-ai/web';
 import AlertConfirmation from './_components/AlertConfirmation';
 import { toast } from 'sonner';
+import TimerComponent from './_components/TimerComponent';
 
 export default function StartInterview() {
   const { interviewInfo } = useContext(interviewDataContext);
   const vapiRef = useRef(null);
   const [aiSpeaking, setAiSpeaking] = useState(false);
   const [userSpeaking, setUserSpeaking] = useState(false);
+  const [conversation, setConversation]=useState();
 
   useEffect(() => {
     vapiRef.current = new Vapi(process.env.NEXT_PUBLIC_VAPI_PUBLIC_KEY);
@@ -60,7 +62,43 @@ export default function StartInterview() {
       toast('Interview Ended');
       setAiSpeaking(false);
       setUserSpeaking(false);
+      GenerateFeedback();
     });
+
+    vapiRef.current.on("message",(message)=>{
+      console.log(message?.conversation);
+      setConversation(message?.conversation);
+    });
+
+    const GenerateFeedback = async () => {
+  try {
+    const result = await fetch('/api/ai-feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ conversation })
+    });
+
+    const data = await result.json();
+    console.log("📥 Response from API:", data); // 👈 Debug this!
+
+    const Content = data?.content;
+
+    if (typeof Content === 'string') {
+      const FINAL_CONTENT = Content.replace('```json', '').replace('```', '');
+      console.log("✅ Final Feedback:", FINAL_CONTENT);
+    } else {
+      console.warn("⚠️ API did not return 'content' as expected. Full data:", data);
+    }
+  } catch (error) {
+    console.error("❌ Error generating feedback:", error);
+  }
+};
+
+
+
+
   }, []);
 
   useEffect(() => {
@@ -140,7 +178,15 @@ Be friendly, give short feedback, and wrap up positively.
     <div className='p-20 lg:px-48 xl:px-58'>
       <h2 className='font-bold text-xl flex justify-between'>
         AI Interview Session
-        <span className='flex gap-2 items-center'>00:00:00</span>
+        <span className='flex gap-2 items-center'>
+      <TimerComponent
+        durationInMinutes={parseInt(interviewInfo?.interviewData?.duration || '15')}
+        onTimerEnd={() => {
+          stopInterview();
+          toast('⏰ Interview Time Over');
+        }}
+      />
+</span>
       </h2>
 
       <div className='grid grid-cols-1 md:grid-cols-2 gap-7 mt-5'>

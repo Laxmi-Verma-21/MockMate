@@ -21,7 +21,7 @@ function Interview() {
   const[loading, setLoading]= useState(false);
   const {interviewInfo, setInterviewInfo}=useContext(interviewDataContext);
   const router=useRouter();
-  const [userEmail,setUserEmail]=useState;
+  const [userEmail,setUserEmail]=useState();
 
 
   useEffect(()=>{
