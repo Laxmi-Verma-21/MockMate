@@ -62,17 +62,17 @@ export default function StartInterview() {
       toast('Interview Ended');
       setAiSpeaking(false);
       setUserSpeaking(false);
-      setCallEnded(true); // ✅ Only mark as ended, wait for conversation
+      setCallEnded(true); //  Only mark as ended, wait for conversation
     });
 
     vapiRef.current.on("message", (message) => {
       if (message?.conversation) {
-        setConversation(message.conversation); // ✅ Set conversation
+        setConversation(message.conversation); // Set conversation
       }
     });
   }, []);
 
-  // ✅ Trigger feedback generation only once both conversation + call end are satisfied
+  // Trigger feedback generation only once both conversation + call end are satisfied
   useEffect(() => {
     if (callEnded && conversation) {
       GenerateFeedback();
@@ -167,9 +167,9 @@ Be friendly, give short feedback, and wrap up positively.
 
 
       const finalContent = match[0];
-      console.log("✅ Final Feedback:", finalContent);
+      console.log(" Final Feedback:", finalContent);
 
-      // ✅ Supabase insert happens here, where finalContent is defined
+      //  Supabase insert happens here, where finalContent is defined
       const { data: insertedData, error } = await supabase
         .from('interview-feedback')
         .insert([
@@ -184,9 +184,9 @@ Be friendly, give short feedback, and wrap up positively.
         .select();
 
       if (error) {
-        console.error("❌ Supabase insert error:", error);
+        console.error(" Supabase insert error:", error);
       } else {
-        console.log("✅ Saved to Supabase:", insertedData);
+        console.log(" Saved to Supabase:", insertedData);
         router.replace('/interview/'+interview_id+"/completed");
       }
     } else {

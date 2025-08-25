@@ -20,7 +20,15 @@ function AllInterview() {
   const GetInterviewList=async()=>{
       let {data: Interviews, error}=await supabase
       .from('Interviews')
-      .select('*')
+      .select(`
+        id,
+        jobPosition,
+        duration,
+        created_at,
+        type,
+        questionList,
+         interview_feedback(count)
+      `)
       .eq('userEmail', user?.email)
       .order('id',{ascending:false})
 

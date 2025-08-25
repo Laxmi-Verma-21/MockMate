@@ -1,17 +1,18 @@
 import { Button } from '@/components/ui/button'
-import { Copy, Send } from 'lucide-react'
+import { ArrowRight, Copy, Send } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
+import Link from "next/link"
 import { toast } from 'sonner'
 
-function InterviewCard({interview}) {
+function InterviewCard({interview, viewDetail=false}) {
 
       const url=process.env.NEXT_PUBLIC_HOST_URL+'/'+interview?.interview_id
       const copylink=()=>{
             navigator.clipboard.writeText(url);
             toast('Copied')
       }
-
+      
       const onSend=()=>{
             window.location.href="mailto:laxmiverma200421@gmail.com?subject=MockMate Interview Link & body=Interview Link :"+url
       }
@@ -22,9 +23,11 @@ function InterviewCard({interview}) {
             <h2 className='text-sm '>{moment(interview?.created_at).format('DD MM YYYY')}</h2>
       </div>
       <h2 className='mt-3 font-bold text-lg'>{interview?.jobPosition}</h2>
-      <h2 className='mt-2 text-gray-500'> {interview?.duration}</h2>
-
-            <div className='flex gap-3 w-full mt-5'>
+      <h2 className='mt-2 text-gray-500 flex justify-between'> {interview?.duration}
+            
+            <span className='text-green-500'>{interview?.interview_feedback?.length || 0 }Candidates</span>
+      </h2>
+            {!viewDetail?<div className='flex gap-3 w-full mt-5'>
             <Button 
             variant='outline' 
             className='flex-1 flex items-center justify-center gap-2'
@@ -38,6 +41,12 @@ function InterviewCard({interview}) {
             <Send size={16} /> Send
             </Button>
             </div>
+            :
+            <Link href={'/scheduled-interview/'+interview?.interview_id+"/details"}>
+                  <Button className="mt-5 w-full " variant="outline">View Detail <ArrowRight/></Button>
+            </Link>
+            
+            }
       </div>
       )
       }
