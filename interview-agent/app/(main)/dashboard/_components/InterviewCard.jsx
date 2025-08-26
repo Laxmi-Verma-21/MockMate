@@ -16,6 +16,14 @@ function InterviewCard({interview, viewDetail=false}) {
       const onSend=()=>{
             window.location.href="mailto:laxmiverma200421@gmail.com?subject=MockMate Interview Link & body=Interview Link :"+url
       }
+
+      // Always treat interview_feedback as an array
+      const feedbackList = Array.isArray(interview?.interview_feedback)
+      ? interview.interview_feedback
+      : interview?.interview_feedback
+      ? [interview.interview_feedback]
+      : [];
+
       return (
       <div className='p-5 bg-white rounded-lg border'>
       <div className='flex items-center justify-between'  >
@@ -25,7 +33,7 @@ function InterviewCard({interview, viewDetail=false}) {
       <h2 className='mt-3 font-bold text-lg'>{interview?.jobPosition}</h2>
       <h2 className='mt-2 text-gray-500 flex justify-between'> {interview?.duration}
             
-            <span className='text-green-500'>{interview?.interview_feedback?.length || 0 }Candidates</span>
+            <span className='text-green-500'>{feedbackList.length} Candidates</span>
       </h2>
             {!viewDetail?<div className='flex gap-3 w-full mt-5'>
             <Button 

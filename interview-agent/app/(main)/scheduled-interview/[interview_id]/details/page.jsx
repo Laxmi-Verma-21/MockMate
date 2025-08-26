@@ -17,23 +17,37 @@ function InterviewDetail() {
       }, [user])
 
       const GetInterviewDetail=async()=>{
-             const result = await supabase.from("Interviews")
+            const result = await supabase
+            .from("Interviews")
             .select(`jobPosition, jobDescription,duration, interview_id,created_at, type,questionList,userEmail,
                   interview_feedback(userEmail,userName, feedback,created_at)`)
             .eq("userEmail", user?.email)
             .eq('interview_id',interview_id)
             
-            setInterviewDetail(result?.data[0])
-            console.log("InterviewDetail result:", result?.data[0]?.interview_feedback);
+            let interviewData=result?.data?.[0];
             
+            if (interviewData) {
+            interviewData.interview_feedback = Array.isArray(interviewData.interview_feedback)
+                  ? interviewData.interview_feedback
+                  : interviewData.interview_feedback
+                  ? [interviewData.interview_feedback]
+                  : [];
+            }
+
+            // setInterviewDetail(result?.data[0])
+            // console.log("InterviewDetail result:", result?.data[0]?.interview_feedback);
+
+            setInterviewDetail(interviewData);
+  console.log("InterviewDetail result:", interviewData);
+
       }
 
-            
+      
   return (
     <div className='mt-5'>
       <h2 className='font-bold text-2xl'> Interview Detail</h2>
       <InterviewDetailContainer interviewDetail={InterviewDetail}/>
-      <CandidatesList candidateList={InterviewDetail ? [InterviewDetail] : []} />
+      <CandidatesList  candidateList={InterviewDetail?.['interview_feedback']} />
 
     </div>
   )
