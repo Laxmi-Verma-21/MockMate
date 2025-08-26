@@ -27,7 +27,7 @@ function AllInterview() {
         created_at,
         type,
         questionList,
-         interview_feedback(count)
+        interview_feedback:interview_feedback(*)
       `)
       .eq('userEmail', user?.email)
       .order('id',{ascending:false})
