@@ -49,9 +49,45 @@ function InterviewLink({interview_id,formData}) {
       <div className='mt-7 bg-white p-5 rounded-2xl w-full'>
             <h2 className='font-bold'>Share Via </h2>
             <div className='flex gap-7 mt-2'>
-                  <Button variant={'outline'} className='flex-1'><Mail/> Slack</Button>
-                  <Button variant={'outline'} className='flex-1'><Mail/> mail</Button>
-                  <Button variant={'outline'} className='flex-1'><MessageCircle/> Whatsapp</Button>
+                  <div className='mt-7 bg-white p-5 rounded-2xl w-full'>
+  <h2 className='font-bold'>Share Via </h2>
+  <div className='flex gap-7 mt-2'>
+    {/* Slack Share */}
+    <Button
+      variant={'outline'}
+      className='flex-1'
+      onClick={() => {
+        // Example Slack share: open in Slack client (requires Slack deep link)
+        window.open(`slack://channel?team=<TEAM_ID>&id=<CHANNEL_ID>&message=${encodeURIComponent(url)}`, '_blank');
+      }}
+    >
+       Slack
+    </Button>
+
+    {/* Email Share */}
+    <Button
+      variant={'outline'}
+      className='flex-1'
+      onClick={() => {
+        window.location.href = `mailto:?subject=AI Interview Link&body=Hi,%0A%0APlease join the interview using this link: ${encodeURIComponent(url)}`;
+      }}
+    >
+      <Mail className="h-4 w-4" /> Mail
+    </Button>
+
+    {/* WhatsApp Share */}
+    <Button
+      variant={'outline'}
+      className='flex-1'
+      onClick={() => {
+        window.open(`https://wa.me/?text=Join the interview using this link: ${encodeURIComponent(url)}`, '_blank');
+      }}
+    >
+      <MessageCircle className="h-4 w-4" /> Whatsapp
+    </Button>
+  </div>
+</div>
+
             </div> 
       </div>
       <div className='flex w-full gap-5 mt-7 justify-center  my-4'>

@@ -46,6 +46,12 @@ function InterviewCard({interview, viewDetail=false}) {
             </Button>
             <Button 
             className='flex-1 flex items-center justify-center gap-2'
+            onClick={() => {
+            const email = prompt("Enter candidate's email address:");
+            if (email) {
+                  window.location.href = `mailto:${email}?subject=MockMate Interview Link&body=Interview Link: ${url}`;
+            }
+            }}
             >
             <Send size={16} /> Send
             </Button>

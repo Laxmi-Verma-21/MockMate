@@ -13,7 +13,15 @@ import { Progress } from '@/components/ui/progress'
 import { Send } from 'lucide-react';
 
 function CandidateFeedbackDialog({ candidate }) {
-  const feedback = candidate?.feedback;
+  //const feedback = candidate?.feedback;
+
+  const feedback = candidate?.feedback?.feedback || {};
+
+// turn all keys to lowercase
+const normalizedFeedback = Object.keys(feedback).reduce((acc, key) => {
+  acc[key.toLowerCase()] = feedback[key];
+  return acc;
+}, {});
 
   const handleSendEmail = () => {
     window.location.href = `mailto:${candidate?.userEmail}?subject=Regarding Interview&body=Hello ${candidate?.userName},`;
@@ -132,7 +140,7 @@ if (average >= 6) {
                         
                         <div>
                               <h2 className='font-bold'>Recommended </h2>
-                              <p className='p-3 bg-secondary my-3 rounded-2xl'>{candidate?.feedback?.feedback?.recommendation??"N/A"}</p>
+                              <p className='p-3 my-3 rounded-2xl'>{normalizedFeedback.recommendation ?? "N/A"}</p>
                         </div>
                       
                   </div>
