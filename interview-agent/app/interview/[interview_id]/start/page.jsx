@@ -138,6 +138,7 @@ Be friendly, give short feedback, and wrap up positively.
 
   const stopInterview = () => {
     vapiRef.current?.stop();
+     router.push('/interview/' + interview_id + "/completed");
   };
 
 
@@ -208,6 +209,7 @@ Be friendly, give short feedback, and wrap up positively.
             onTimerEnd={() => {
               stopInterview();
               toast('⏰ Interview Time Over');
+              router.push('/interview/' + interview_id + "/completed"); 
             }}
           />
         </span>
